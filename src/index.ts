@@ -46,7 +46,7 @@ app.get("/container/:id", async (c) => {
 	const id = c.req.param("id");
 	const containerId = c.env.MY_CONTAINER.idFromName(`/container/${id}`);
 	const container = c.env.MY_CONTAINER.get(containerId);
-	// await container.waitForPort({ portToCheck: 8080 });
+	await container.waitForPort({ portToCheck: 8080 });
 	return await container.fetch(c.req.raw);
 });
 
@@ -59,14 +59,14 @@ app.get("/error", async (c) => {
 // Load balance requests across multiple containers
 app.get("/lb", async (c) => {
 	const container = await getRandom(c.env.MY_CONTAINER, 3);
-	// await container.waitForPort({ portToCheck: 8080 });
+	await container.waitForPort({ portToCheck: 8080 });
 	return await container.fetch(c.req.raw);
 });
 
 // Get a single container instance (singleton pattern)
 app.get("/singleton", async (c) => {
 	const container = getContainer(c.env.MY_CONTAINER);
-	// await container.waitForPort({ portToCheck: 8080 });
+	await container.waitForPort({ portToCheck: 8080 });
 	return await container.fetch(c.req.raw);
 });
 
